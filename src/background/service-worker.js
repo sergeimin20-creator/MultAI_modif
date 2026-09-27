@@ -7,7 +7,18 @@ const PROVIDER_DOMAINS = [
   'grok.com',
   'deepseek.com',
   'qwen.ai',
-  'meta.ai'
+  'meta.ai',
+  'giga.chat',
+  'yandex.ru',
+  'ya.ru',
+  'kimi.ai',
+  'perplexity.ai',
+  'z.ai',
+  'tencent.com',
+  'google.com',
+  'brave.com',
+  'mistral.ai',
+  'cloud.microsoft'
 ];
 
 const HEADERS_TO_STRIP = [
