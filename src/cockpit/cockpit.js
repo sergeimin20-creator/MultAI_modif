@@ -459,12 +459,16 @@ function createPane(provider) {
   return pane;
 }
 
+function providerMessageOrigins(provider) {
+  return [provider?.origin, ...(provider?.altOrigins || [])].filter(Boolean);
+}
+
 function wakePane(providerId) {
   const pane = panes[providerId];
   const provider = getProvider(providerId);
   if (!pane || !pane.iframe || !provider) return;
 
-  const targetOrigins = [provider.origin, ...(provider.altOrigins || [])];
+  const targetOrigins = providerMessageOrigins(provider);
   const send = () => {
     const cw = pane.iframe.contentWindow;
     if (!cw) return;
@@ -649,7 +653,7 @@ async function getPaneCurrentUrl(providerId) {
     return pane?.iframe?.src || '';
   }
   try {
-    const res = await sendToPane(pane.iframe, provider.origin, { type: MSG.GET_URL }, { timeoutMs: 2000 });
+    const res = await sendToPane(pane.iframe, providerMessageOrigins(provider), { type: MSG.GET_URL }, { timeoutMs: 2000 });
     return res.url || pane.iframe.src || '';
   } catch (_) {
     return pane.iframe.src || '';
@@ -737,7 +741,7 @@ async function openPaneInTab(providerId) {
   let url = provider.url;
   if (pane?.ready && pane.iframe?.contentWindow) {
     try {
-      const res = await sendToPane(pane.iframe, provider.origin, { type: MSG.GET_URL }, { timeoutMs: 2000 });
+      const res = await sendToPane(pane.iframe, providerMessageOrigins(provider), { type: MSG.GET_URL }, { timeoutMs: 2000 });
       if (res.url) url = res.url;
     } catch (_) { /* fall back to provider.url */ }
   }
@@ -752,7 +756,7 @@ async function newChatOn(providerId) {
     return;
   }
   try {
-    await sendToPane(pane.iframe, provider.origin, { type: MSG.NEW_CHAT });
+    await sendToPane(pane.iframe, providerMessageOrigins(provider), { type: MSG.NEW_CHAT });
   } catch (_) {
     pane.iframe.src = provider.url;
   }
@@ -910,7 +914,7 @@ async function refreshCompare() {
     ready.map(async id => {
       const provider = getProvider(id);
       const pane = panes[id];
-      const res = await sendToPane(pane.iframe, provider.origin, { type: MSG.READ_LAST }, { timeoutMs: 6000 });
+      const res = await sendToPane(pane.iframe, providerMessageOrigins(provider), { type: MSG.READ_LAST }, { timeoutMs: 6000 });
       return { id, text: res.text || '', html: res.html || '' };
     })
   );
@@ -981,7 +985,7 @@ async function quoteFromPane(providerId) {
   if (!provider) return;
   if (!pane?.ready) { showBanner(`${provider.label} isn't ready yet.`); return; }
   try {
-    const res = await sendToPane(pane.iframe, provider.origin, { type: MSG.READ_SELECTION }, { timeoutMs: 3000 });
+    const res = await sendToPane(pane.iframe, providerMessageOrigins(provider), { type: MSG.READ_SELECTION }, { timeoutMs: 3000 });
     const text = (res.text || '').trim();
     if (!text) { showBanner(`Nothing selected in ${provider.label}.`); return; }
     const label = provider.label;
@@ -1066,7 +1070,7 @@ async function confirmJudge() {
     selected.map(async id => {
       const p = getProvider(id);
       const pane = panes[id];
-      const res = await sendToPane(pane.iframe, p.origin, { type: MSG.READ_LAST }, { timeoutMs: 6000 });
+      const res = await sendToPane(pane.iframe, providerMessageOrigins(p), { type: MSG.READ_LAST }, { timeoutMs: 6000 });
       return { id, label: p.label, text: (res.text || '').trim() };
     })
   );
@@ -1091,7 +1095,7 @@ async function confirmJudge() {
 
   try {
     targetPane.iframe.focus();
-    await sendToPane(targetPane.iframe, provider.origin, {
+    await sendToPane(targetPane.iframe, providerMessageOrigins(provider), {
       type: MSG.BROADCAST,
       payload: { prompt, files: [], skipSubmit: true }
     }, { timeoutMs: 120000 });
@@ -1149,7 +1153,7 @@ async function broadcast() {
     ready.map(async id => {
       const provider = getProvider(id);
       const pane = panes[id];
-      await sendToPane(pane.iframe, provider.origin, {
+      await sendToPane(pane.iframe, providerMessageOrigins(provider), {
         type: MSG.BROADCAST,
         payload: { prompt, files }
       }, { timeoutMs: 120000 });
@@ -1179,7 +1183,7 @@ async function probePane(providerId) {
   if (!pane?.ready) return;
   const provider = getProvider(providerId);
   try {
-    const res = await sendToPane(pane.iframe, provider.origin, { type: MSG.PROBE }, { timeoutMs: 5000 });
+    const res = await sendToPane(pane.iframe, providerMessageOrigins(provider), { type: MSG.PROBE }, { timeoutMs: 5000 });
     pane.state = res.state;
     updatePaneHeader(providerId);
     if (res.state?.plan && res.state.plan !== 'Unknown') savePlan(providerId, res.state.plan);

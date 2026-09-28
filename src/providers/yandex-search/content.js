@@ -6,6 +6,13 @@
   // Site-specific selectors. Keep these near the top: provider UIs change often.
   const S = {
     promptInput: [
+      // Yandex Search's primary query input.
+      'input[name="text"]',
+      'textarea[name="text"]',
+      'input[aria-label*="Search" i]',
+      'input[aria-label*="Поиск" i]',
+      'input[placeholder*="Find" i]',
+      'input[placeholder*="Найдётся" i]',
       'textarea[placeholder*="Ask" i]',
       'textarea[placeholder*="message" i]',
       'textarea[placeholder*="search" i]',
@@ -16,6 +23,10 @@
       'input[type="text"]'
     ],
     sendButton: [
+      'form[action*="search"] button[type="submit"]',
+      'form[role="search"] button[type="submit"]',
+      'button[aria-label*="Search" i]',
+      'button[aria-label*="Найти" i]',
       'button[aria-label*="Send" i]',
       'button[aria-label*="Submit" i]',
       'button[aria-label*="Search" i]',
@@ -48,5 +59,5 @@
     ]
   };
 
-  G.register({ provider: 'yandex-search', selectors: S, homeUrl: 'https://yandex.ru/' });
+  G.register({ provider: 'yandex-search', selectors: S, homeUrl: 'https://yandex.com/' });
 })();
