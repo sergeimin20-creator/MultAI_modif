@@ -10,6 +10,8 @@ const PROVIDER_DOMAINS = [
   'meta.ai',
   'giga.chat',
   'yandex.ru',
+  'yandex.com',
+  'dzen.ru',
   'ya.ru',
   'kimi.ai',
   'perplexity.ai',

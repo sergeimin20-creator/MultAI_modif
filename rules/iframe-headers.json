@@ -62,7 +62,9 @@
         "google.com",
         "brave.com",
         "mistral.ai",
-        "cloud.microsoft"
+        "cloud.microsoft",
+        "yandex.com",
+        "dzen.ru"
       ],
       "resourceTypes": [
         "main_frame",

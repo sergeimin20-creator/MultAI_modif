@@ -16,7 +16,7 @@ export const PROVIDERS = [
   { id: 'brave-search', label: 'Brave Search', url: 'https://search.brave.com/', origin: 'https://search.brave.com', hasContentScript: true },
   { id: 'mistral',  label: 'Mistral',   url: 'https://chat.mistral.ai/chat',  origin: 'https://chat.mistral.ai',    altOrigins: ['https://mistral.ai', 'https://www.mistral.ai'], hasContentScript: true },
   { id: 'copilot',  label: 'Microsoft Copilot', url: 'https://copilot.cloud.microsoft/', origin: 'https://copilot.cloud.microsoft', hasContentScript: true },
-  { id: 'yandex-search', label: 'Yandex Search', url: 'https://yandex.ru/',   origin: 'https://yandex.ru',          altOrigins: ['https://www.yandex.ru'], hasContentScript: true }
+  { id: 'yandex-search', label: 'Yandex Search', url: 'https://yandex.com/',  origin: 'https://yandex.com',         altOrigins: ['https://www.yandex.com', 'https://yandex.ru', 'https://www.yandex.ru', 'https://dzen.ru'], hasContentScript: true }
 ];
 
 export const DEFAULT_CREW = ['chatgpt', 'claude', 'gemini', 'grok'];
