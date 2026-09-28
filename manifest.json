@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "MultAI",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Ask multiple AI chat sites in parallel from one cockpit.",
   "icons": {
     "16": "assets/icons/icon16.png",
