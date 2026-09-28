@@ -45,6 +45,13 @@ export function sendToPane(iframe, origin, message, { timeoutMs = 10000 } = {}) 
       else resolve(e.data);
     }
     window.addEventListener('message', onMessage);
-    iframe.contentWindow.postMessage(payload, origin);
+    // A provider can redirect between its canonical URL and an allowed
+    // alternate origin (for example yandex.com → yandex.ru/Dzen). Sending to
+    // every known origin lets the content script at the final URL receive the
+    // request; browsers discard messages whose target origin does not match.
+    const origins = Array.isArray(origin) ? origin : [origin];
+    for (const targetOrigin of new Set(origins.filter(Boolean))) {
+      iframe.contentWindow.postMessage(payload, targetOrigin);
+    }
   });
 }
